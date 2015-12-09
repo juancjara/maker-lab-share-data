@@ -3,9 +3,11 @@
     <div id="app">
       <input v-model="newMsg" v-on:keyup.enter="addMsg">
       <ul>
-        <li v-for="msg in messages">
-          <span>{{{msg}}}</span>
-        </li>
+        <template v-for="msg in messages" track-by="$index">
+          <li>
+            <span>{{{msg}}}</span>
+          </li>
+        </template>
       </ul>
     </div>
     <script src="bundle.js"></script>
