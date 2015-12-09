@@ -46,19 +46,37 @@
 
 	'use strict';
 
-	var _vue = __webpack_require__(1);
+	var _app = __webpack_require__(1);
+
+	var _app2 = _interopRequireDefault(_app);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	(0, _app2.default)('testerino');
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _vue = __webpack_require__(2);
 
 	var _vue2 = _interopRequireDefault(_vue);
 
-	var _firebase = __webpack_require__(3);
+	var _firebase = __webpack_require__(4);
 
 	var _firebase2 = _interopRequireDefault(_firebase);
 
-	var _autolinker = __webpack_require__(4);
+	var _autolinker = __webpack_require__(5);
 
 	var _autolinker2 = _interopRequireDefault(_autolinker);
 
-	var _xss = __webpack_require__(5);
+	var _xss = __webpack_require__(6);
 
 	var _xss2 = _interopRequireDefault(_xss);
 
@@ -70,11 +88,15 @@
 	  return _autolinker2.default.link((0, _xss2.default)(msg).trim());
 	};
 
-	var Messages = new _firebase2.default(baseURL + 'channel');
+	var Messages = undefined;
 
-	Messages.on('child_added', function (snapshot) {
-	  app.messages.unshift(cleanAndAutolink(snapshot.val()));
-	});
+	var start = function start(channel) {
+	  Messages = new _firebase2.default(baseURL + channel);
+
+	  Messages.on('child_added', function (snapshot) {
+	    app.messages.unshift(cleanAndAutolink(snapshot.val()));
+	  });
+	};
 
 	var app = new _vue2.default({
 
@@ -97,8 +119,10 @@
 
 	});
 
+	exports.default = start;
+
 /***/ },
-/* 1 */
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/*!
@@ -9403,10 +9427,10 @@
 	}
 
 	module.exports = Vue;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -9503,7 +9527,7 @@
 
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports) {
 
 	/*! @license Firebase v2.3.2
@@ -9777,7 +9801,7 @@
 
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (root, factory) {
@@ -12969,7 +12993,7 @@
 
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -12978,9 +13002,9 @@
 	 * @author 老雷<leizongmin@gmail.com>
 	 */
 
-	var DEFAULT = __webpack_require__(6);
-	var parser = __webpack_require__(13);
-	var FilterXSS = __webpack_require__(14);
+	var DEFAULT = __webpack_require__(7);
+	var parser = __webpack_require__(14);
+	var FilterXSS = __webpack_require__(15);
 
 
 	/**
@@ -13018,7 +13042,7 @@
 
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13027,8 +13051,8 @@
 	 * @author 老雷<leizongmin@gmail.com>
 	 */
 
-	var FilterCSS = __webpack_require__(7).FilterCSS;
-	var _ = __webpack_require__(12);
+	var FilterCSS = __webpack_require__(8).FilterCSS;
+	var _ = __webpack_require__(13);
 
 	// 默认白名单
 	var whiteList = {
@@ -13431,7 +13455,7 @@
 
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -13440,8 +13464,8 @@
 	 * @author 老雷<leizongmin@gmail.com>
 	 */
 
-	var DEFAULT = __webpack_require__(8);
-	var FilterCSS = __webpack_require__(9);
+	var DEFAULT = __webpack_require__(9);
+	var FilterCSS = __webpack_require__(10);
 
 
 	/**
@@ -13478,7 +13502,7 @@
 
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports) {
 
 	/**
@@ -13863,7 +13887,7 @@
 
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13872,9 +13896,9 @@
 	 * @author 老雷<leizongmin@gmail.com>
 	 */
 
-	var DEFAULT = __webpack_require__(8);
-	var parseStyle = __webpack_require__(10);
-	var _ = __webpack_require__(11);
+	var DEFAULT = __webpack_require__(9);
+	var parseStyle = __webpack_require__(11);
+	var _ = __webpack_require__(12);
 
 
 	/**
@@ -13959,7 +13983,7 @@
 
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13968,7 +13992,7 @@
 	 * @author 老雷<leizongmin@gmail.com>
 	 */
 
-	var _ = __webpack_require__(11);
+	var _ = __webpack_require__(12);
 
 
 	/**
@@ -14039,7 +14063,7 @@
 
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -14080,7 +14104,7 @@
 
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -14115,7 +14139,7 @@
 
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14124,7 +14148,7 @@
 	 * @author 老雷<leizongmin@gmail.com>
 	 */
 
-	var _ = __webpack_require__(12);
+	var _ = __webpack_require__(13);
 
 	/**
 	 * 获取标签的名称
@@ -14358,7 +14382,7 @@
 
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14367,12 +14391,12 @@
 	 * @author 老雷<leizongmin@gmail.com>
 	 */
 
-	var FilterCSS = __webpack_require__(7).FilterCSS;
-	var DEFAULT = __webpack_require__(6);
-	var parser = __webpack_require__(13);
+	var FilterCSS = __webpack_require__(8).FilterCSS;
+	var DEFAULT = __webpack_require__(7);
+	var parser = __webpack_require__(14);
 	var parseTag = parser.parseTag;
 	var parseAttr = parser.parseAttr;
-	var _ = __webpack_require__(12);
+	var _ = __webpack_require__(13);
 
 
 	/**
