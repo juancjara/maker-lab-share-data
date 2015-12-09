@@ -4,6 +4,10 @@
      .hide {
        display: none;
      }
+     .addMsg {
+       min-width: 400px;
+       width: 50%;
+     }
     </style>
   </head>
   <body>
@@ -15,7 +19,8 @@
 
     <div id="msg">
       <h3>{{channelInfo}}</h3>
-      <input v-model="newMsg"
+      <input class="addMsg"
+             v-model="newMsg"
              v-bind:class="{'hide': shouldHide}"
              v-on:keyup.enter="addMsg">
       <ul>
