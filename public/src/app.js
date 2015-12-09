@@ -9,7 +9,17 @@ let cleanAndAutolink = (msg) => Autolinker.link(xss(msg).trim());
 
 let Messages;
 
-let start = (channel) => {
+let start = (channel, inputEnable) => {
+  if (inputTable) {
+    app.channelInfo = `Channel created: ${channel}`;
+  } else {
+    app.channelInfo = `Joinned channel: ${channel}`;
+  }
+
+  app.shouldHide = !inputEnable;
+  app.messages = [];
+  app.newMsg = '';
+
   Messages = new Firebase(baseURL + channel);
 
   Messages.on('child_added', (snapshot) => {
@@ -19,9 +29,11 @@ let start = (channel) => {
 
 let app = new Vue({
 
-  el: "#app",
+  el: "#msg",
 
   data: {
+    channelInfo: '',
+    shouldHide: true,
     newMsg: '',
     messages: []
   },

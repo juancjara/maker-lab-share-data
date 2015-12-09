@@ -46,13 +46,43 @@
 
 	'use strict';
 
+	var _vue = __webpack_require__(2);
+
+	var _vue2 = _interopRequireDefault(_vue);
+
 	var _app = __webpack_require__(1);
 
 	var _app2 = _interopRequireDefault(_app);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	(0, _app2.default)('testerino');
+	var validChannel = function validChannel(channel) {
+	  return channel.length > 0;
+	};
+
+	var setChannel = function setChannel(channel, inputEnable) {
+	  (0, _app2.default)(channel, inputEnable);
+	};
+
+	new _vue2.default({
+
+	  el: "#channel",
+
+	  data: {
+	    channel: ''
+	  },
+
+	  methods: {
+	    goToChannel: function goToChannel() {
+	      var inputEnable = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+
+	      if (validChannel(this.channel)) {
+	        (0, _app2.default)(this.channel, inputEnable);
+	      }
+	    }
+	  }
+
+	});
 
 /***/ },
 /* 1 */
@@ -90,7 +120,17 @@
 
 	var Messages = undefined;
 
-	var start = function start(channel) {
+	var start = function start(channel, inputEnable) {
+	  if (inputTable) {
+	    app.channelInfo = 'Channel created: ' + channel;
+	  } else {
+	    app.channelInfo = 'Joinned channel: ' + channel;
+	  }
+
+	  app.shouldHide = !inputEnable;
+	  app.messages = [];
+	  app.newMsg = '';
+
 	  Messages = new _firebase2.default(baseURL + channel);
 
 	  Messages.on('child_added', function (snapshot) {
@@ -100,9 +140,11 @@
 
 	var app = new _vue2.default({
 
-	  el: "#app",
+	  el: "#msg",
 
 	  data: {
+	    channelInfo: '',
+	    shouldHide: true,
 	    newMsg: '',
 	    messages: []
 	  },
