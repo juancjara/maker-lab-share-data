@@ -46,11 +46,11 @@
 
 	'use strict';
 
-	var _vue = __webpack_require__(2);
+	var _vue = __webpack_require__(1);
 
 	var _vue2 = _interopRequireDefault(_vue);
 
-	var _app = __webpack_require__(1);
+	var _app = __webpack_require__(3);
 
 	var _app2 = _interopRequireDefault(_app);
 
@@ -86,85 +86,6 @@
 
 /***/ },
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _vue = __webpack_require__(2);
-
-	var _vue2 = _interopRequireDefault(_vue);
-
-	var _firebase = __webpack_require__(4);
-
-	var _firebase2 = _interopRequireDefault(_firebase);
-
-	var _autolinker = __webpack_require__(5);
-
-	var _autolinker2 = _interopRequireDefault(_autolinker);
-
-	var _xss = __webpack_require__(6);
-
-	var _xss2 = _interopRequireDefault(_xss);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var baseURL = 'https://share-data-makerlab.firebaseio.com/';
-
-	var cleanAndAutolink = function cleanAndAutolink(msg) {
-	  return _autolinker2.default.link((0, _xss2.default)(msg).trim());
-	};
-
-	var Messages = undefined;
-
-	var start = function start(channel, inputEnable) {
-	  if (inputTable) {
-	    app.channelInfo = 'Channel created: ' + channel;
-	  } else {
-	    app.channelInfo = 'Joinned channel: ' + channel;
-	  }
-
-	  app.shouldHide = !inputEnable;
-	  app.messages = [];
-	  app.newMsg = '';
-
-	  Messages = new _firebase2.default(baseURL + channel);
-
-	  Messages.on('child_added', function (snapshot) {
-	    app.messages.unshift(cleanAndAutolink(snapshot.val()));
-	  });
-	};
-
-	var app = new _vue2.default({
-
-	  el: "#msg",
-
-	  data: {
-	    channelInfo: '',
-	    shouldHide: true,
-	    newMsg: '',
-	    messages: []
-	  },
-
-	  methods: {
-	    addMsg: function addMsg() {
-	      var msg = cleanAndAutolink(this.newMsg);
-	      if (msg) {
-	        Messages.push(msg);
-	        this.newMsg = '';
-	      }
-	    }
-	  }
-
-	});
-
-	exports.default = start;
-
-/***/ },
-/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/*!
@@ -9469,10 +9390,10 @@
 	}
 
 	module.exports = Vue;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 3 */
+/* 2 */
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -9567,6 +9488,85 @@
 	};
 	process.umask = function() { return 0; };
 
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _vue = __webpack_require__(1);
+
+	var _vue2 = _interopRequireDefault(_vue);
+
+	var _firebase = __webpack_require__(4);
+
+	var _firebase2 = _interopRequireDefault(_firebase);
+
+	var _autolinker = __webpack_require__(5);
+
+	var _autolinker2 = _interopRequireDefault(_autolinker);
+
+	var _xss = __webpack_require__(6);
+
+	var _xss2 = _interopRequireDefault(_xss);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var baseURL = 'https://share-data-makerlab.firebaseio.com/';
+
+	var cleanAndAutolink = function cleanAndAutolink(msg) {
+	  return _autolinker2.default.link((0, _xss2.default)(msg).trim());
+	};
+
+	var Messages = undefined;
+
+	var start = function start(channel, inputEnable) {
+	  if (inputEnable) {
+	    app.channelInfo = 'Channel created: ' + channel;
+	  } else {
+	    app.channelInfo = 'Joinned channel: ' + channel;
+	  }
+
+	  app.shouldHide = !inputEnable;
+	  app.messages = [];
+	  app.newMsg = '';
+
+	  Messages = new _firebase2.default(baseURL + channel);
+
+	  Messages.on('child_added', function (snapshot) {
+	    app.messages.unshift(cleanAndAutolink(snapshot.val()));
+	  });
+	};
+
+	var app = new _vue2.default({
+
+	  el: "#msg",
+
+	  data: {
+	    channelInfo: '',
+	    shouldHide: true,
+	    newMsg: '',
+	    messages: []
+	  },
+
+	  methods: {
+	    addMsg: function addMsg() {
+	      var msg = cleanAndAutolink(this.newMsg);
+	      if (msg) {
+	        Messages.push(msg);
+	        this.newMsg = '';
+	      }
+	    }
+	  }
+
+	});
+
+	exports.default = start;
 
 /***/ },
 /* 4 */

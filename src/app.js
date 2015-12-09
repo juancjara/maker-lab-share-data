@@ -10,7 +10,7 @@ let cleanAndAutolink = (msg) => Autolinker.link(xss(msg).trim());
 let Messages;
 
 let start = (channel, inputEnable) => {
-  if (inputTable) {
+  if (inputEnable) {
     app.channelInfo = `Channel created: ${channel}`;
   } else {
     app.channelInfo = `Joinned channel: ${channel}`;
