@@ -4,19 +4,17 @@ import Autolinker from 'autolinker';
 import xss from 'xss';
 
 const baseURL = 'https://share-data-makerlab.firebaseio.com/';
-
+let Messages;
 let cleanAndAutolink = (msg) => Autolinker.link(xss(msg).trim());
 
-let Messages;
-
-let start = (channel, inputEnable) => {
-  if (inputEnable) {
-    app.channelInfo = `Channel created: ${channel}`;
+let start = (channel, show) => {
+  if (show) {
+    app.channelInfo = `Created channel: ${channel}`;
   } else {
-    app.channelInfo = `Joinned channel: ${channel}`;
+    app.channelInfo = `Joined created: ${channel}`;
   }
 
-  app.shouldHide = !inputEnable;
+  app.shouldShow = show;
   app.messages = [];
   app.newMsg = '';
 
@@ -33,7 +31,7 @@ let app = new Vue({
 
   data: {
     channelInfo: '',
-    shouldHide: true,
+    shouldShow: false,
     newMsg: '',
     messages: []
   },
@@ -43,7 +41,9 @@ let app = new Vue({
     addMsg() {
       let msg = cleanAndAutolink(this.newMsg);
       if (msg) {
-        Messages.push(msg);
+        Messages.push(msg, function(err) {
+          if (err) return alert(`Data could not be saved. ${err}`);
+        });
         this.newMsg = '';
       }
     }

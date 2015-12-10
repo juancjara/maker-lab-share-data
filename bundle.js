@@ -56,12 +56,18 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	var ref = new Firebase("https://share-data-makerlab.firebaseio.com");
+
 	var validChannel = function validChannel(channel) {
 	  return channel.length > 0;
 	};
 
-	var setChannel = function setChannel(channel, inputEnable) {
-	  (0, _app2.default)(channel, inputEnable);
+	var setChannel = function setChannel(channel) {
+	  var show = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+
+	  if (validChannel(channel)) {
+	    (0, _app2.default)(channel, show);
+	  }
 	};
 
 	new _vue2.default({
@@ -69,16 +75,31 @@
 	  el: "#channel",
 
 	  data: {
-	    channel: ''
+	    channel: '',
+	    greetings: ''
 	  },
 
 	  methods: {
-	    goToChannel: function goToChannel() {
-	      var inputEnable = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+	    login: function login() {
+	      var _this = this;
 
-	      if (validChannel(this.channel)) {
-	        (0, _app2.default)(this.channel, inputEnable);
+	      ref.authWithOAuthPopup("facebook", function (err, authData) {
+	        if (err) return alert('error login');
+	        _this.greetings = 'Hi, ' + authData.facebook.displayName;
+	      });
+	    },
+	    logout: function logout() {
+	      this.greetings = '';
+	      ref.unauth();
+	    },
+	    create: function create() {
+	      if (!ref.getAuth()) {
+	        return alert('Login required');
 	      }
+	      setChannel(this.channel, true);
+	    },
+	    join: function join() {
+	      setChannel(this.channel);
 	    }
 	  }
 
@@ -9518,21 +9539,19 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var baseURL = 'https://share-data-makerlab.firebaseio.com/';
-
+	var Messages = undefined;
 	var cleanAndAutolink = function cleanAndAutolink(msg) {
 	  return _autolinker2.default.link((0, _xss2.default)(msg).trim());
 	};
 
-	var Messages = undefined;
-
-	var start = function start(channel, inputEnable) {
-	  if (inputEnable) {
-	    app.channelInfo = 'Channel created: ' + channel;
+	var start = function start(channel, show) {
+	  if (show) {
+	    app.channelInfo = 'Created channel: ' + channel;
 	  } else {
-	    app.channelInfo = 'Joinned channel: ' + channel;
+	    app.channelInfo = 'Joined created: ' + channel;
 	  }
 
-	  app.shouldHide = !inputEnable;
+	  app.shouldShow = show;
 	  app.messages = [];
 	  app.newMsg = '';
 
@@ -9549,7 +9568,7 @@
 
 	  data: {
 	    channelInfo: '',
-	    shouldHide: true,
+	    shouldShow: false,
 	    newMsg: '',
 	    messages: []
 	  },
@@ -9558,7 +9577,9 @@
 	    addMsg: function addMsg() {
 	      var msg = cleanAndAutolink(this.newMsg);
 	      if (msg) {
-	        Messages.push(msg);
+	        Messages.push(msg, function (err) {
+	          if (err) return alert('Data could not be saved. ' + err);
+	        });
 	        this.newMsg = '';
 	      }
 	    }

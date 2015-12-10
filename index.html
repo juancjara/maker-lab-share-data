@@ -1,9 +1,6 @@
 <html>
   <head>
     <style>
-     .hide {
-       display: none;
-     }
      .addMsg {
        min-width: 400px;
        width: 50%;
@@ -12,17 +9,20 @@
   </head>
   <body>
     <div id="channel">
+      <button @click="login">Login</button>
+      <button @click="logout">Logout</button>
+      <h4>{{greetings}}</h4>
       <input type="text" v-model="channel">
-      <button v-on:click="goToChannel(true)">Create</button>
-      <button v-on:click="goToChannel()">Join</button>
+      <button @click="create">Create</button>
+      <button @click="join">Join</button>
     </div>
 
     <div id="msg">
       <h3>{{channelInfo}}</h3>
       <input class="addMsg"
              v-model="newMsg"
-             v-bind:class="{'hide': shouldHide}"
-             v-on:keyup.enter="addMsg">
+             v-show="shouldShow"
+             @keyup.enter="addMsg">
       <ul>
         <template v-for="msg in messages" track-by="$index">
           <li>
